@@ -371,9 +371,10 @@ public class Deck : MonoBehaviour
     private void actualizarPuntos()
     {
         ptosJugador.text = "Puntos: " + player.GetComponent<CardHand>().points.ToString();
-        if (player.GetComponent<CardHand>().cards.Count == 2)
-            ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().segundaDealer;
-        else if (dealer.GetComponent<CardHand>().cards.Count > 2)
+        ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().segundaDealer;
+        if (player.GetComponent<CardHand>().cards.Count > 2 || dealer.GetComponent<CardHand>().cards.Count > 2 || player.GetComponent<CardHand>().points == 21)
+        {
             ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().points.ToString();
+        }
     }
 }
