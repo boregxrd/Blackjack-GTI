@@ -9,24 +9,25 @@ public class Deck : MonoBehaviour
     public Button hitButton;
     public Button stickButton;
     public Button playAgainButton;
+    public Button apostarButton;
     public Text finalMessage;
     public Text probMessage;
     public Text bancaMessage;
     public Text apuestaMessage;
 
     public int[] values = new int[52];
-    int cardIndex = 0;    
-       
+    int cardIndex = 0;
+
     private void Awake()
-    {    
-        InitCardValues();        
+    {
+        InitCardValues();
 
     }
 
     private void Start()
     {
         ShuffleCards();
-        StartGame();        
+        StartGame();
     }
 
     private void InitCardValues()
@@ -81,24 +82,26 @@ public class Deck : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            
+
             PushDealer();
             PushPlayer();
         }
         if (player.GetComponent<CardHand>().points == 21)
         {
             finalMessage.text = "Has hecho Blackjack";
-            hitButton.interactable = false;
-            stickButton.interactable = false;
+            
+            desactivarButtons();
+        
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
         }
         if (dealer.GetComponent<CardHand>().points == 21)
         {
 
             finalMessage.text = "El Dealer ha hecho Blackjack";
-            dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true); 
-            hitButton.interactable = false;
-            stickButton.interactable = false;
+            dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
+            
+            desactivarButtons();
+
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
         }
     }
@@ -259,8 +262,8 @@ public class Deck : MonoBehaviour
 
     void PushDealer()
     {
-        dealer.GetComponent<CardHand>().Push(faces[cardIndex],values[cardIndex]);
-        cardIndex++;        
+        dealer.GetComponent<CardHand>().Push(faces[cardIndex], values[cardIndex]);
+        cardIndex++;
     }
 
     void PushPlayer()
@@ -268,19 +271,19 @@ public class Deck : MonoBehaviour
         player.GetComponent<CardHand>().Push(faces[cardIndex], values[cardIndex]/*,cardCopy*/);
         cardIndex++;
         CalculateProbabilities();
-    }       
+    }
 
     public void Hit()
     {
-        dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true); 
+        dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
 
-       PushPlayer();
+        PushPlayer();
 
-        if (player.GetComponent<CardHand>().points > 21) 
+        if (player.GetComponent<CardHand>().points > 21)
         {
             finalMessage.text = "Oh... ¡Te has pasado!";
-            hitButton.interactable = false;
-            stickButton.interactable = false;
+            
+            desactivarButtons();
         }
     }
 
@@ -290,45 +293,45 @@ public class Deck : MonoBehaviour
 
         bool fin = false;
 
-        do 
+        do
         {
-            if (dealer.GetComponent<CardHand>().points <= 16) 
+            if (dealer.GetComponent<CardHand>().points <= 16)
             {
-                PushDealer(); 
+                PushDealer();
             }
             else
             {
-                if (player.GetComponent<CardHand>().points < dealer.GetComponent<CardHand>().points && dealer.GetComponent<CardHand>().points <= 21) 
+                if (player.GetComponent<CardHand>().points < dealer.GetComponent<CardHand>().points && dealer.GetComponent<CardHand>().points <= 21)
                 {
                     finalMessage.text = "¡Has perdido!";
+
                 }
                 else
                 {
                     finalMessage.text = "¡Has ganado!";
-                    player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta * 2; 
+                    player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta * 2;
                 }
 
-                if (player.GetComponent<CardHand>().points == dealer.GetComponent<CardHand>().points) 
+                if (player.GetComponent<CardHand>().points == dealer.GetComponent<CardHand>().points)
                 {
                     finalMessage.text = "Empate";
-                    player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta; 
+                    player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta;
                 }
-                fin = true; 
-                hitButton.interactable = false;
-                stickButton.interactable = false;
+                fin = true;
+                
+                desactivarButtons();
             }
         } while (!fin);
 
     }
     public void PlayAgain()
     {
-        hitButton.interactable = true;
-        stickButton.interactable = true;
+        activarButtons();
         finalMessage.text = "";
         bancaMessage.text = "Banca: " + player.GetComponent<CardHand>().banca.ToString() + " €";
         apuestaMessage.text = "Apuesta: 0 €";
         player.GetComponent<CardHand>().Clear();
-        dealer.GetComponent<CardHand>().Clear();          
+        dealer.GetComponent<CardHand>().Clear();
         cardIndex = 0;
         ShuffleCards();
         StartGame();
@@ -336,15 +339,26 @@ public class Deck : MonoBehaviour
 
     public void apostar()
     {
-        if (player.GetComponent<CardHand>().banca != 0) 
+        if (player.GetComponent<CardHand>().banca != 0)
         {
             player.GetComponent<CardHand>().banca -= 10;
             player.GetComponent<CardHand>().apuesta += 10;
-            bancaMessage.text = "Banca: " + player.GetComponent<CardHand>().banca.ToString() + " €"; 
+            bancaMessage.text = "Banca: " + player.GetComponent<CardHand>().banca.ToString() + " €";
             apuestaMessage.text = "Apuesta: " + player.GetComponent<CardHand>().apuesta.ToString() + " €";
         }
 
     }
 
-    
+    private void desactivarButtons()
+    {
+        hitButton.interactable = false;
+        stickButton.interactable = false;
+        apostarButton.interactable = false;
+    }
+
+    private void activarButtons() {
+        hitButton.interactable = true;
+        stickButton.interactable = true;
+        apostarButton.interactable = true;
+    }
 }
