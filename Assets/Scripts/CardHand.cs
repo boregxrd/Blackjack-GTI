@@ -8,6 +8,8 @@ public class CardHand : MonoBehaviour
     public bool isDealer = false;
     public int points;
     private int coordY;
+
+    //agregado por nosotros
     public int banca = 1000;
     public int apuesta;
     public int segundaDealer;
@@ -53,15 +55,20 @@ public class CardHand : MonoBehaviour
 
         cardCopy.GetComponent<CardModel>().front = front;
         cardCopy.GetComponent<CardModel>().value = value;
-        
+
         if (isDealer && cards.Count <= 1)
+        {
             cardCopy.GetComponent<CardModel>().ToggleFace(false);
-        else if(isDealer && cards.Count == 2) {
+        }
+        else if (isDealer && cards.Count == 2)
+        {
             segundaDealer = cardCopy.GetComponent<CardModel>().value;
             cardCopy.GetComponent<CardModel>().ToggleFace(true);
         }
         else
+        {
             cardCopy.GetComponent<CardModel>().ToggleFace(true);
+        }
 
         int val = 0;
         int aces = 0;
