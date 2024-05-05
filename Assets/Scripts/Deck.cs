@@ -21,6 +21,7 @@ public class Deck : MonoBehaviour
 
     public int[] values = new int[52];
     int cardIndex = 0;
+    bool dealerGanaSinBlackJack = false;
 
     private void Awake()
     {
@@ -291,6 +292,12 @@ public class Deck : MonoBehaviour
 
             desactivarButtons();
         }
+        else if(player.GetComponent<CardHand>().points == 21) 
+        {
+            finalMessage.text = "Has hecho Blackjack";
+
+            desactivarButtons();
+        }
     }
 
     public void Stand()
@@ -309,8 +316,9 @@ public class Deck : MonoBehaviour
             {
                 if (player.GetComponent<CardHand>().points < dealer.GetComponent<CardHand>().points && dealer.GetComponent<CardHand>().points <= 21)
                 {
+                    dealerGanaSinBlackJack = true;
+                    actualizarPuntos();
                     finalMessage.text = "¡Has perdido!";
-
                 }
                 else if (player.GetComponent<CardHand>().points == dealer.GetComponent<CardHand>().points)
                 {
@@ -372,9 +380,12 @@ public class Deck : MonoBehaviour
     private void actualizarPuntos()
     {
         ptosJugador.text = "Puntos: " + player.GetComponent<CardHand>().points.ToString();
-        if (player.GetComponent<CardHand>().cards.Count == 2)
-            ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().segundaDealer;
-        else if (dealer.GetComponent<CardHand>().cards.Count > 2)
+        ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().segundaDealer;
+        if (player.GetComponent<CardHand>().cards.Count > 2 || dealer.GetComponent<CardHand>().cards.Count > 2 || player.GetComponent<CardHand>().points == 21 || dealerGanaSinBlackJack)
+        {
             ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().points.ToString();
+            dealerGanaSinBlackJack = false;
+        }
+
     }
 }
