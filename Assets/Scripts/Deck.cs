@@ -387,6 +387,5 @@ public class Deck : MonoBehaviour
             dealerPoints.text = "Puntos: " + dealer.GetComponent<CardHand>().points.ToString();
             dealerWinsWOBlackJack = false;
         }
-
     }
 }
