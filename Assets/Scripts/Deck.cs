@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Deck : MonoBehaviour
@@ -87,7 +87,7 @@ public class Deck : MonoBehaviour
         }
         if (player.GetComponent<CardHand>().points == 21)
         {
-            finalMessage.text = "El Jugador ha hecho Blackjack";
+            finalMessage.text = "Has hecho Blackjack";
             hitButton.interactable = false;
             stickButton.interactable = false;
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
@@ -111,7 +111,7 @@ public class Deck : MonoBehaviour
 
         if (player.GetComponent<CardHand>().points < 12)
         {
-            probMayor21 = "\n - X > 21: 0.0";
+            probMayor21 = "\n X > 21: 0.0";
         }
         else
         {
@@ -139,9 +139,6 @@ public class Deck : MonoBehaviour
                 }
             }
 
-            Debug.Log("Pasar de 21");
-            Debug.Log("puntos para pasarse: " + puntosParaPasarse + ", cartas que sobrepasan: " + cartasQueSobrepasan + ", Cartas en la mesa: " + cardIndex);
-
             probMayor21 = "\n X > 21: " + (cartasQueSobrepasan / (52.0 - cardIndex * 0.0)).ToString("F2");
         }
 
@@ -163,7 +160,7 @@ public class Deck : MonoBehaviour
 
         if (player.GetComponent<CardHand>().points < 6)
         {
-            probEntre17 = "\n - Probabilidad de que el jugador obtenga entre un 17 y un 21 si pide una carta: 0.0";
+            probEntre17 = "\n 17<=X<=21: 0.0";
         }
         else
         {
@@ -197,10 +194,7 @@ public class Deck : MonoBehaviour
                 }
             }
 
-            Debug.Log("Entre 17 y 21");
-            Debug.Log("cartas hasta 17: " + cartasHasta17 + ", cartas hasta 21: " + cartasHasta21 + ", cartas que entran: " + cartasQueEntran + ", Cartas en la mesa: " + cardIndex);
-
-            probEntre17 = "\n - 17<=X<=21: " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
+            probEntre17 = "\n 17<=X<=21: " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
         }
 
         string probCartaOculta = "";
@@ -210,7 +204,7 @@ public class Deck : MonoBehaviour
 
         if (puntosPlayer < puntosDelaer)
         {
-            probCartaOculta = "\n - Teniendo la carta oculta, probabilidad de que el dealer tenga más puntuación que el jugador:  1.0";
+            probCartaOculta = "\n Deal > Play:  1.0";
         }
         else
         {
@@ -219,7 +213,7 @@ public class Deck : MonoBehaviour
 
             if (puntosDiferencia > 11)
             {
-                probCartaOculta = "\n - Teniendo la carta oculta, probabilidad de que el dealer tenga más puntuación que el jugador:  0.0";
+                probCartaOculta = "\n Deal > Play:  0.0";
             }
             else
             {
@@ -255,10 +249,7 @@ public class Deck : MonoBehaviour
                     }
                 }
 
-                Debug.Log("Carta Oculta");
-                Debug.Log("Puntos Player: " + puntosPlayer + ", puntos Dealer: " + puntosDelaer + ", Puntos Diferencia: " + puntosDiferencia + ", cartas que entran: " + cartasQueEntran);
-
-                probCartaOculta = "\n - Deal > Play:  " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
+                probCartaOculta = "\n Deal > Play:  " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
             }
 
             probMessage.text = probCartaOculta + "\n\n" + probEntre17 + "\n\n" + probMayor21;
@@ -287,7 +278,7 @@ public class Deck : MonoBehaviour
 
         if (player.GetComponent<CardHand>().points > 21) 
         {
-            finalMessage.text = "El Jugador ha perdido";
+            finalMessage.text = "Oh... ¡Te has pasado!";
             hitButton.interactable = false;
             stickButton.interactable = false;
         }
@@ -309,20 +300,20 @@ public class Deck : MonoBehaviour
             {
                 if (player.GetComponent<CardHand>().points < dealer.GetComponent<CardHand>().points && dealer.GetComponent<CardHand>().points <= 21) 
                 {
-                    finalMessage.text = "El Dealer ha GANADO";
+                    finalMessage.text = "¡Has perdido!";
                 }
                 else
                 {
-                    finalMessage.text = "El Juegador ha GANADO";
+                    finalMessage.text = "¡Has ganado!";
                     player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta * 2; 
                 }
 
                 if (player.GetComponent<CardHand>().points == dealer.GetComponent<CardHand>().points) 
                 {
-                    finalMessage.text = "EMPATE";
+                    finalMessage.text = "Empate";
                     player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta; 
                 }
-                fin = true; // Salimos del bucle
+                fin = true; 
                 hitButton.interactable = false;
                 stickButton.interactable = false;
             }
