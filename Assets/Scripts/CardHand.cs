@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class CardHand : MonoBehaviour
@@ -9,10 +10,10 @@ public class CardHand : MonoBehaviour
     public int points;
     private int coordY;
 
-    //agregado por nosotros
-    public int banca = 1000;
-    public int apuesta;
-    public int segundaDealer;
+
+    public int bank = 1000;
+    public int bet;
+    public int dealerSecondCard;
 
     private void Awake()
     {
@@ -36,11 +37,12 @@ public class CardHand : MonoBehaviour
         }
         cards.Clear();
 
-        apuesta = 0; 
+        bet = 0; 
     }        
 
     public void InitialToggle()
     {
+        // Despues del primer movimiento dar la vuelta a carta 1 del dealer
         cards[0].GetComponent<CardModel>().ToggleFace(true);              
     }
 
@@ -50,31 +52,40 @@ public class CardHand : MonoBehaviour
         cards.Add(cardCopy);
 
         float coordX = 1.4f * (float)(cards.Count - 4);
-        Vector3 pos = new Vector3(coordX, coordY);               
+        Vector3 pos = new Vector3(coordX, coordY);
         cardCopy.transform.position = pos;
 
         cardCopy.GetComponent<CardModel>().front = front;
         cardCopy.GetComponent<CardModel>().value = value;
 
+        
         if (isDealer && cards.Count <= 1)
         {
+            // primera carta boca abajo
             cardCopy.GetComponent<CardModel>().ToggleFace(false);
         }
         else if (isDealer && cards.Count == 2)
         {
-            segundaDealer = cardCopy.GetComponent<CardModel>().value;
+            // sacar valor de segunda carta para puntos iniciales
+            dealerSecondCard = cardCopy.GetComponent<CardModel>().value;
             cardCopy.GetComponent<CardModel>().ToggleFace(true);
         }
         else
         {
+            // demas cartas boca arriba
             cardCopy.GetComponent<CardModel>().ToggleFace(true);
         }
+        
+        multipleAces(cardCopy);
+    }
 
+    private void multipleAces(GameObject cardCopy)
+    {
+        // metodo para que solo un As valga 11 puntos
         int val = 0;
         int aces = 0;
         foreach (GameObject f in cards)
-        {            
-
+        {
             if (f.GetComponent<CardModel>().value != 11)
                 val += f.GetComponent<CardModel>().value;
             else

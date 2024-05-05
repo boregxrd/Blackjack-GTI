@@ -14,14 +14,14 @@ public class Deck : MonoBehaviour
     public Button apostarButton;
     public Text finalMessage;
     public Text probMessage;
-    public Text bancaMessage;
-    public Text apuestaMessage;
-    public Text ptosDealer;
-    public Text ptosJugador;
+    public Text bankMessage;
+    public Text betMessage;
+    public Text dealerPoints;
+    public Text playerPoints;
 
     public int[] values = new int[52];
     int cardIndex = 0;
-    bool dealerGanaSinBlackJack = false;
+    bool dealerWinsWOBlackJack = false;
 
     private void Awake()
     {
@@ -95,7 +95,7 @@ public class Deck : MonoBehaviour
         {
             finalMessage.text = "Has hecho Blackjack";
 
-            desactivarButtons();
+            disableButtons();
 
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
         }
@@ -105,7 +105,7 @@ public class Deck : MonoBehaviour
             finalMessage.text = "El Dealer ha hecho Blackjack";
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
 
-            desactivarButtons();
+            disableButtons();
 
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
         }
@@ -115,152 +115,152 @@ public class Deck : MonoBehaviour
     {
 
         // Probabilidad de que el jugador obtenga más de 21 si pide una carta
-        string probMayor21 = "";
+        string greater21Prob = "";
 
         if (player.GetComponent<CardHand>().points < 12)
         {
-            probMayor21 = "\n X > 21: 0.0";
+            greater21Prob = "\n X > 21: 0.0";
         }
         else
         {
-            int puntosParaPasarse = 22 - player.GetComponent<CardHand>().points;
-            float cartasQueSobrepasan = 12;
+            int pointsToLose = 22 - player.GetComponent<CardHand>().points;
+            float cardsThatSurpass = 12;
 
-            for (int i = puntosParaPasarse; i <= 9; i++)
+            for (int i = pointsToLose; i <= 9; i++)
             {
-                cartasQueSobrepasan += 4;
+                cardsThatSurpass += 4;
             }
 
             for (int i = 0; i < dealer.GetComponent<CardHand>().cards.Count; i++)
             {
-                if (dealer.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= puntosParaPasarse && i > 0)
+                if (dealer.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= pointsToLose && i > 0)
                 {
-                    cartasQueSobrepasan -= 1;
+                    cardsThatSurpass -= 1;
                 }
             }
 
             for (int i = 0; i < player.GetComponent<CardHand>().cards.Count; i++)
             {
-                if (player.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= puntosParaPasarse)
+                if (player.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= pointsToLose)
                 {
-                    cartasQueSobrepasan -= 1;
+                    cardsThatSurpass -= 1;
                 }
             }
 
-            probMayor21 = "\n X > 21: " + (cartasQueSobrepasan / (52.0 - cardIndex * 0.0)).ToString("F2");
+            greater21Prob = "\n X > 21: " + (cardsThatSurpass / (52.0 - cardIndex * 0.0)).ToString("F2");
         }
 
-        string probEntre17 = "";
+        string between17Prob = "";
 
-        int cartasHasta17 = 0;
-        int cartasHasta21 = 21 - player.GetComponent<CardHand>().points;
-        float cartasQueEntran = 0;
+        int cardsTill17 = 0;
+        int cardsTill21 = 21 - player.GetComponent<CardHand>().points;
+        float cardsThatGoIn = 0;
 
         if (player.GetComponent<CardHand>().points < 17)
         {
-            cartasHasta17 = 17 - player.GetComponent<CardHand>().points;
+            cardsTill17 = 17 - player.GetComponent<CardHand>().points;
         }
 
-        if (cartasHasta21 > 11)
+        if (cardsTill21 > 11)
         {
-            cartasHasta21 = 11;
+            cardsTill21 = 11;
         }
 
         if (player.GetComponent<CardHand>().points < 6)
         {
-            probEntre17 = "\n 17<=X<=21: 0.0";
+            between17Prob = "\n 17<=X<=21: 0.0";
         }
         else
         {
 
-            for (int i = cartasHasta17; i <= cartasHasta21; i++)
+            for (int i = cardsTill17; i <= cardsTill21; i++)
             {
                 if (i == 10)
                 {
-                    cartasQueEntran += 12;
+                    cardsThatGoIn += 12;
                 }
                 else
                 {
-                    cartasQueEntran += 4;
+                    cardsThatGoIn += 4;
                 }
 
             }
 
             for (int i = 0; i < dealer.GetComponent<CardHand>().cards.Count; i++)
             {
-                if (dealer.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= cartasHasta17 && dealer.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value <= cartasHasta21 && i > 0)
+                if (dealer.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= cardsTill17 && dealer.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value <= cardsTill21 && i > 0)
                 {
-                    cartasQueEntran -= 1;
+                    cardsThatGoIn -= 1;
                 }
             }
 
             for (int i = 0; i < player.GetComponent<CardHand>().cards.Count; i++)
             {
-                if (player.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= cartasHasta17 && player.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value <= cartasHasta21)
+                if (player.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= cardsTill17 && player.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value <= cardsTill21)
                 {
-                    cartasQueEntran -= 1;
+                    cardsThatGoIn -= 1;
                 }
             }
 
-            probEntre17 = "\n 17<=X<=21: " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
+            between17Prob = "\n 17<=X<=21: " + (cardsThatGoIn / (52.0 - cardIndex * 0.0)).ToString("F2");
         }
 
-        string probCartaOculta = "";
-        int puntosPlayer = player.GetComponent<CardHand>().points;
-        int puntosDelaer = dealer.GetComponent<CardHand>().points - dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().value;
-        int puntosDiferencia = 0;
+        string hiddenCardProb = "";
+        int playerPoints = player.GetComponent<CardHand>().points;
+        int dealerPoints = dealer.GetComponent<CardHand>().points - dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().value;
+        int diffPoints = 0;
 
-        if (puntosPlayer < puntosDelaer)
+        if (playerPoints < dealerPoints)
         {
-            probCartaOculta = "\n Deal > Play:  1.0";
+            hiddenCardProb = "\n Deal > Play:  1.0";
         }
         else
         {
 
-            puntosDiferencia = puntosPlayer - puntosDelaer;
+            diffPoints = playerPoints - dealerPoints;
 
-            if (puntosDiferencia > 11)
+            if (diffPoints > 11)
             {
-                probCartaOculta = "\n Deal > Play:  0.0";
+                hiddenCardProb = "\n Deal > Play:  0.0";
             }
             else
             {
-                cartasQueEntran = 0;
+                cardsThatGoIn = 0;
 
-                for (int i = puntosDiferencia++; i <= 11; i++)
+                for (int i = diffPoints++; i <= 11; i++)
                 {
 
                     if (i == 10)
                     {
-                        cartasQueEntran += 12;
+                        cardsThatGoIn += 12;
                     }
                     else
                     {
-                        cartasQueEntran += 4;
+                        cardsThatGoIn += 4;
                     }
 
                 }
 
                 for (int i = 0; i < dealer.GetComponent<CardHand>().cards.Count; i++)
                 {
-                    if (dealer.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= puntosDiferencia && i > 0)
+                    if (dealer.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= diffPoints && i > 0)
                     {
-                        cartasQueEntran -= 1;
+                        cardsThatGoIn -= 1;
                     }
                 }
 
                 for (int i = 0; i < player.GetComponent<CardHand>().cards.Count; i++)
                 {
-                    if (player.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= puntosDiferencia)
+                    if (player.GetComponent<CardHand>().cards[i].GetComponent<CardModel>().value >= diffPoints)
                     {
-                        cartasQueEntran -= 1;
+                        cardsThatGoIn -= 1;
                     }
                 }
 
-                probCartaOculta = "\n Deal > Play:  " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
+                hiddenCardProb = "\n Deal > Play:  " + (cardsThatGoIn / (52.0 - cardIndex * 0.0)).ToString("F2");
             }
 
-            probMessage.text = probCartaOculta + "\n\n" + probEntre17 + "\n\n" + probMayor21;
+            probMessage.text = hiddenCardProb + "\n\n" + between17Prob + "\n\n" + greater21Prob;
         }
 
     }
@@ -269,14 +269,14 @@ public class Deck : MonoBehaviour
     {
         dealer.GetComponent<CardHand>().Push(faces[cardIndex], values[cardIndex]);
         cardIndex++;
-        actualizarPuntos();
+        updatePoints();
     }
 
     void PushPlayer()
     {
         player.GetComponent<CardHand>().Push(faces[cardIndex], values[cardIndex]/*,cardCopy*/);
         cardIndex++;
-        actualizarPuntos();
+        updatePoints();
         CalculateProbabilities();
     }
 
@@ -290,13 +290,13 @@ public class Deck : MonoBehaviour
         {
             finalMessage.text = "Oh... ¡Te has pasado!";
 
-            desactivarButtons();
+            disableButtons();
         }
         else if(player.GetComponent<CardHand>().points == 21) 
         {
             finalMessage.text = "Has hecho Blackjack";
 
-            desactivarButtons();
+            disableButtons();
         }
     }
 
@@ -304,9 +304,9 @@ public class Deck : MonoBehaviour
     {
         dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
 
-        bool fin = false;
+        bool end = false;
 
-        do
+        while (!end)
         {
             if (dealer.GetComponent<CardHand>().points <= 16)
             {
@@ -316,34 +316,34 @@ public class Deck : MonoBehaviour
             {
                 if (player.GetComponent<CardHand>().points < dealer.GetComponent<CardHand>().points && dealer.GetComponent<CardHand>().points <= 21)
                 {
-                    dealerGanaSinBlackJack = true;
-                    actualizarPuntos();
+                    dealerWinsWOBlackJack = true;
+                    updatePoints();
                     finalMessage.text = "¡Has perdido!";
                 }
                 else if (player.GetComponent<CardHand>().points == dealer.GetComponent<CardHand>().points)
                 {
                     finalMessage.text = "Empate";
-                    player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta;
+                    player.GetComponent<CardHand>().bank += player.GetComponent<CardHand>().bet;
                 }
                 else
                 {
                     finalMessage.text = "¡Has ganado!";
-                    player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta * 2;
+                    player.GetComponent<CardHand>().bank += player.GetComponent<CardHand>().bet * 2;
                 }
 
-                fin = true;
+                end = true;
 
-                desactivarButtons();
+                disableButtons();
             }
-        } while (!fin);
-
+        } 
     }
+
     public void PlayAgain()
     {
-        activarButtons();
+        enableButtons();
         finalMessage.text = "";
-        bancaMessage.text = "Banca: " + player.GetComponent<CardHand>().banca.ToString() + " €";
-        apuestaMessage.text = "Apuesta: 0 €";
+        bankMessage.text = "Banca: " + player.GetComponent<CardHand>().bank.ToString() + " €";
+        betMessage.text = "Apuesta: 0 €";
         player.GetComponent<CardHand>().Clear();
         dealer.GetComponent<CardHand>().Clear();
         cardIndex = 0;
@@ -353,38 +353,37 @@ public class Deck : MonoBehaviour
 
     public void apostar()
     {
-        if (player.GetComponent<CardHand>().banca != 0)
+        if (player.GetComponent<CardHand>().bank != 0)
         {
-            player.GetComponent<CardHand>().banca -= 10;
-            player.GetComponent<CardHand>().apuesta += 10;
-            bancaMessage.text = "Banca: " + player.GetComponent<CardHand>().banca.ToString() + " €";
-            apuestaMessage.text = "Apuesta: " + player.GetComponent<CardHand>().apuesta.ToString() + " €";
+            player.GetComponent<CardHand>().bank -= 10;
+            player.GetComponent<CardHand>().bet += 10;
+            bankMessage.text = "Banca: " + player.GetComponent<CardHand>().bank.ToString() + " €";
+            betMessage.text = "Apuesta: " + player.GetComponent<CardHand>().bet.ToString() + " €";
         }
-
     }
 
-    private void desactivarButtons()
+    private void disableButtons()
     {
         hitButton.interactable = false;
         stickButton.interactable = false;
         apostarButton.interactable = false;
     }
 
-    private void activarButtons()
+    private void enableButtons()
     {
         hitButton.interactable = true;
         stickButton.interactable = true;
         apostarButton.interactable = true;
     }
 
-    private void actualizarPuntos()
+    private void updatePoints()
     {
-        ptosJugador.text = "Puntos: " + player.GetComponent<CardHand>().points.ToString();
-        ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().segundaDealer;
-        if (player.GetComponent<CardHand>().cards.Count > 2 || dealer.GetComponent<CardHand>().cards.Count > 2 || player.GetComponent<CardHand>().points == 21 || dealerGanaSinBlackJack)
+        playerPoints.text = "Puntos: " + player.GetComponent<CardHand>().points.ToString();
+        dealerPoints.text = "Puntos: " + dealer.GetComponent<CardHand>().dealerSecondCard;
+        if (player.GetComponent<CardHand>().cards.Count > 2 || dealer.GetComponent<CardHand>().cards.Count > 2 || player.GetComponent<CardHand>().points == 21 || dealerWinsWOBlackJack)
         {
-            ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().points.ToString();
-            dealerGanaSinBlackJack = false;
+            dealerPoints.text = "Puntos: " + dealer.GetComponent<CardHand>().points.ToString();
+            dealerWinsWOBlackJack = false;
         }
 
     }
