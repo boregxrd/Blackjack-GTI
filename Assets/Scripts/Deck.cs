@@ -291,6 +291,12 @@ public class Deck : MonoBehaviour
 
             desactivarButtons();
         }
+        else if(player.GetComponent<CardHand>().points == 21) 
+        {
+            finalMessage.text = "Has hecho Blackjack";
+
+            desactivarButtons();
+        }
     }
 
     public void Stand()
