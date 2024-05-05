@@ -1,4 +1,5 @@
 using System.Threading;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -311,17 +312,17 @@ public class Deck : MonoBehaviour
                     finalMessage.text = "¡Has perdido!";
 
                 }
+                else if (player.GetComponent<CardHand>().points == dealer.GetComponent<CardHand>().points)
+                {
+                    finalMessage.text = "Empate";
+                    player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta;
+                }
                 else
                 {
                     finalMessage.text = "¡Has ganado!";
                     player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta * 2;
                 }
 
-                if (player.GetComponent<CardHand>().points == dealer.GetComponent<CardHand>().points)
-                {
-                    finalMessage.text = "Empate";
-                    player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta;
-                }
                 fin = true;
 
                 desactivarButtons();
