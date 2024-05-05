@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Deck : MonoBehaviour
@@ -139,7 +139,7 @@ public class Deck : MonoBehaviour
                 }
             }
 
-            probMayor21 = "\n X > 21: " + cartasQueSobrepasan / (52.0 - cardIndex * 0.0);
+            probMayor21 = "\n X > 21: " + (cartasQueSobrepasan / (52.0 - cardIndex * 0.0)).ToString("F2");
         }
 
         string probEntre17 = "";
@@ -194,7 +194,7 @@ public class Deck : MonoBehaviour
                 }
             }
 
-            probEntre17 = "\n 17<=X<=21: " + cartasQueEntran / (52.0 - cardIndex * 0.0);
+            probEntre17 = "\n 17<=X<=21: " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
         }
 
         string probCartaOculta = "";
@@ -249,7 +249,7 @@ public class Deck : MonoBehaviour
                     }
                 }
 
-                probCartaOculta = "\n Deal > Play:  " + cartasQueEntran / (52.0 - cardIndex * 0.0);
+                probCartaOculta = "\n Deal > Play:  " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
             }
 
             probMessage.text = probCartaOculta + "\n\n" + probEntre17 + "\n\n" + probMayor21;

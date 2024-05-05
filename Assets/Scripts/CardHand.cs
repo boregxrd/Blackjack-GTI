@@ -49,7 +49,7 @@ public class CardHand : MonoBehaviour
         cards.Add(cardCopy);
 
         //La posicionamos en el tablero 
-        float coordX = (float)1.4 * (float)(cards.Count - 4);
+        float coordX = 1.4f * (float)(cards.Count - 4);
         Vector3 pos = new Vector3(coordX, coordY);               
         cardCopy.transform.position = pos;
 
