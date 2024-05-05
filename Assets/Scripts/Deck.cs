@@ -142,7 +142,7 @@ public class Deck : MonoBehaviour
             Debug.Log("Pasar de 21");
             Debug.Log("puntos para pasarse: " + puntosParaPasarse + ", cartas que sobrepasan: " + cartasQueSobrepasan + ", Cartas en la mesa: " + cardIndex);
 
-            probMayor21 = "\n X > 21: " + cartasQueSobrepasan / (52.0 - cardIndex * 0.0);
+            probMayor21 = "\n X > 21: " + (cartasQueSobrepasan / (52.0 - cardIndex * 0.0)).ToString("F2");
         }
 
         string probEntre17 = "";
@@ -200,7 +200,7 @@ public class Deck : MonoBehaviour
             Debug.Log("Entre 17 y 21");
             Debug.Log("cartas hasta 17: " + cartasHasta17 + ", cartas hasta 21: " + cartasHasta21 + ", cartas que entran: " + cartasQueEntran + ", Cartas en la mesa: " + cardIndex);
 
-            probEntre17 = "\n - 17<=X<=21: " + cartasQueEntran / (52.0 - cardIndex * 0.0);
+            probEntre17 = "\n - 17<=X<=21: " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
         }
 
         string probCartaOculta = "";
@@ -258,7 +258,7 @@ public class Deck : MonoBehaviour
                 Debug.Log("Carta Oculta");
                 Debug.Log("Puntos Player: " + puntosPlayer + ", puntos Dealer: " + puntosDelaer + ", Puntos Diferencia: " + puntosDiferencia + ", cartas que entran: " + cartasQueEntran);
 
-                probCartaOculta = "\n - Deal > Play:  " + cartasQueEntran / (52.0 - cardIndex * 0.0);
+                probCartaOculta = "\n - Deal > Play:  " + (cartasQueEntran / (52.0 - cardIndex * 0.0)).ToString("F2");
             }
 
             probMessage.text = probCartaOculta + "\n\n" + probEntre17 + "\n\n" + probMayor21;
