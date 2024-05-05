@@ -14,6 +14,8 @@ public class Deck : MonoBehaviour
     public Text probMessage;
     public Text bancaMessage;
     public Text apuestaMessage;
+    public Text ptosDealer;
+    public Text ptosJugador;
 
     public int[] values = new int[52];
     int cardIndex = 0;
@@ -264,12 +266,14 @@ public class Deck : MonoBehaviour
     {
         dealer.GetComponent<CardHand>().Push(faces[cardIndex], values[cardIndex]);
         cardIndex++;
+        actualizarPuntos();
     }
 
     void PushPlayer()
     {
         player.GetComponent<CardHand>().Push(faces[cardIndex], values[cardIndex]/*,cardCopy*/);
         cardIndex++;
+        actualizarPuntos();
         CalculateProbabilities();
     }
 
@@ -360,5 +364,10 @@ public class Deck : MonoBehaviour
         hitButton.interactable = true;
         stickButton.interactable = true;
         apostarButton.interactable = true;
+    }
+
+    private void actualizarPuntos() {
+        ptosJugador.text = "Puntos: " + player.GetComponent<CardHand>().points.ToString();
+        ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().points.ToString();
     }
 }
