@@ -14,6 +14,7 @@ public class Deck : MonoBehaviour
     public Button apostarButton;
     public Text finalMessage;
     public Text probMessage;
+    //nuestras variables
     public Text bankMessage;
     public Text betMessage;
     public Text dealerPoints;
@@ -21,6 +22,7 @@ public class Deck : MonoBehaviour
 
     public int[] values = new int[52];
     int cardIndex = 0;
+    //bandera del caso especifico de derrota
     bool dealerWinsWOBlackJack = false;
 
     private void Awake()
