@@ -96,7 +96,7 @@ public class Deck : MonoBehaviour
         {
 
             finalMessage.text = "El Dealer ha hecho Blackjack";
-            dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true); /
+            dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true); 
             hitButton.interactable = false;
             stickButton.interactable = false;
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
