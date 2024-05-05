@@ -15,7 +15,6 @@ public class CardHand : MonoBehaviour
     private void Awake()
     {
         points = 0;
-        //Definimos dónde posicionamos las cartas de cada uno
         if (isDealer)
             coordY = 3;
         else
@@ -35,7 +34,7 @@ public class CardHand : MonoBehaviour
         }
         cards.Clear();
 
-        apuesta = 0; // Limpiamos el contador de la apuesta
+        apuesta = 0; 
     }        
 
     public void InitialToggle()
@@ -45,20 +44,16 @@ public class CardHand : MonoBehaviour
 
     public void Push(Sprite front, int value)
     {
-        //Creamos una carta y la añadimos a nuestra mano
         GameObject cardCopy = (GameObject)Instantiate(card);
         cards.Add(cardCopy);
 
-        //La posicionamos en el tablero 
         float coordX = 1.4f * (float)(cards.Count - 4);
         Vector3 pos = new Vector3(coordX, coordY);               
         cardCopy.transform.position = pos;
 
-        //Le ponemos la imagen y el valor asignado
         cardCopy.GetComponent<CardModel>().front = front;
         cardCopy.GetComponent<CardModel>().value = value;
         
-        //La cubrimos si es la primera del dealer
         if (isDealer && cards.Count <= 1)
             cardCopy.GetComponent<CardModel>().ToggleFace(false);
         else if(isDealer && cards.Count == 2) {
@@ -68,7 +63,6 @@ public class CardHand : MonoBehaviour
         else
             cardCopy.GetComponent<CardModel>().ToggleFace(true);
 
-        //Calculamos la puntuación de nuestra mano
         int val = 0;
         int aces = 0;
         foreach (GameObject f in cards)
@@ -93,7 +87,5 @@ public class CardHand : MonoBehaviour
         }
 
         points = val;
-       
     }
-
 }
