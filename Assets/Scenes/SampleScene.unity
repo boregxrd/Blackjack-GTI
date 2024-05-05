@@ -275,6 +275,7 @@ MonoBehaviour:
   hitButton: {fileID: 532673294}
   stickButton: {fileID: 2074924244}
   playAgainButton: {fileID: 495796953}
+  apostarButton: {fileID: 1427141510}
   finalMessage: {fileID: 1167008771}
   probMessage: {fileID: 459416828}
   bancaMessage: {fileID: 1924211510}
