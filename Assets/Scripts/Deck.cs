@@ -91,9 +91,9 @@ public class Deck : MonoBehaviour
         if (player.GetComponent<CardHand>().points == 21)
         {
             finalMessage.text = "Has hecho Blackjack";
-            
+
             desactivarButtons();
-        
+
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
         }
         if (dealer.GetComponent<CardHand>().points == 21)
@@ -101,7 +101,7 @@ public class Deck : MonoBehaviour
 
             finalMessage.text = "El Dealer ha hecho Blackjack";
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
-            
+
             desactivarButtons();
 
             dealer.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().ToggleFace(true);
@@ -286,7 +286,7 @@ public class Deck : MonoBehaviour
         if (player.GetComponent<CardHand>().points > 21)
         {
             finalMessage.text = "Oh... ¡Te has pasado!";
-            
+
             desactivarButtons();
         }
     }
@@ -322,7 +322,7 @@ public class Deck : MonoBehaviour
                     player.GetComponent<CardHand>().banca += player.GetComponent<CardHand>().apuesta;
                 }
                 fin = true;
-                
+
                 desactivarButtons();
             }
         } while (!fin);
@@ -360,14 +360,19 @@ public class Deck : MonoBehaviour
         apostarButton.interactable = false;
     }
 
-    private void activarButtons() {
+    private void activarButtons()
+    {
         hitButton.interactable = true;
         stickButton.interactable = true;
         apostarButton.interactable = true;
     }
 
-    private void actualizarPuntos() {
+    private void actualizarPuntos()
+    {
         ptosJugador.text = "Puntos: " + player.GetComponent<CardHand>().points.ToString();
-        ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().points.ToString();
+        if (dealer.GetComponent<CardHand>().cards.Count == 2)
+            ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().segundaDealer;
+        else
+            ptosDealer.text = "Puntos: " + dealer.GetComponent<CardHand>().points.ToString();
     }
 }

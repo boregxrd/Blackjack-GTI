@@ -10,7 +10,8 @@ public class CardHand : MonoBehaviour
     private int coordY;
     public int banca = 1000;
     public int apuesta;
-     
+    public int segundaDealer;
+
     private void Awake()
     {
         points = 0;
@@ -60,6 +61,10 @@ public class CardHand : MonoBehaviour
         //La cubrimos si es la primera del dealer
         if (isDealer && cards.Count <= 1)
             cardCopy.GetComponent<CardModel>().ToggleFace(false);
+        else if(isDealer && cards.Count == 2) {
+            segundaDealer = cardCopy.GetComponent<CardModel>().value;
+            cardCopy.GetComponent<CardModel>().ToggleFace(true);
+        }
         else
             cardCopy.GetComponent<CardModel>().ToggleFace(true);
 
